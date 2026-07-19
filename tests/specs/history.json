@@ -1,19 +1,33 @@
 [
   {
-    "name": "/history",
+    "name": "/history shows empty state for new user",
     "steps": [
       {
+        "send": { "text": "/history" },
         "expect": [
           {
             "method": "sendMessage",
             "payload": {
-              "text": "Retrieve recent signals with optional filters"
+              "text": "No signals yet. Signals you receive will appear here."
             }
           }
-        ],
-        "send": {
-          "text": "/history"
-        }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "History menu button shows empty state",
+    "steps": [
+      {
+        "send": { "callback": "history:show" },
+        "expect": [
+          {
+            "method": "editMessageText",
+            "payload": {
+              "text": "No signals yet. Signals you receive will appear here."
+            }
+          }
+        ]
       }
     ]
   }

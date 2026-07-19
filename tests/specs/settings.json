@@ -1,19 +1,53 @@
 [
   {
-    "name": "/settings",
+    "name": "/settings shows setup prompt for new user",
     "steps": [
       {
+        "send": { "text": "/settings" },
         "expect": [
           {
             "method": "sendMessage",
             "payload": {
-              "text": "Modify user preferences and subscription status"
+              "text": "You haven't set up yet. Tap /start to begin."
             }
           }
-        ],
-        "send": {
-          "text": "/settings"
-        }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "/settings shows preferences for onboarded user",
+    "steps": [
+      { "send": { "text": "/start" }, "expect": [{ "method": "sendMessage" }] },
+      { "send": { "callback": "onb:tz:UTC" }, "expect": [{ "method": "editMessageText" }] },
+      { "send": { "callback": "onb:pairs:ok" }, "expect": [{ "method": "editMessageText" }] },
+      { "send": { "callback": "onb:notify:24x5" }, "expect": [{ "method": "editMessageText" }] },
+      {
+        "send": { "text": "/settings" },
+        "expect": [
+          {
+            "method": "sendMessage",
+            "payload": { "text": "Your settings:\n\n🌍 Timezone: UTC\n📊 Pairs: EUR/USD, GBP/USD, USD/JPY, AUD/USD, USD/CHF, USD/CAD, NZD/USD\n🔔 Notifications: All trading hours\n📈 Max signals/day: 10\n✅ Subscribed: Yes" }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Settings menu button shows settings for onboarded user",
+    "steps": [
+      { "send": { "text": "/start" }, "expect": [{ "method": "sendMessage" }] },
+      { "send": { "callback": "onb:tz:UTC" }, "expect": [{ "method": "editMessageText" }] },
+      { "send": { "callback": "onb:pairs:ok" }, "expect": [{ "method": "editMessageText" }] },
+      { "send": { "callback": "onb:notify:24x5" }, "expect": [{ "method": "editMessageText" }] },
+      {
+        "send": { "callback": "settings:show" },
+        "expect": [
+          {
+            "method": "editMessageText",
+            "payload": { "text": "Your settings:\n\n🌍 Timezone: UTC\n📊 Pairs: EUR/USD, GBP/USD, USD/JPY, AUD/USD, USD/CHF, USD/CAD, NZD/USD\n🔔 Notifications: All trading hours\n📈 Max signals/day: 10\n✅ Subscribed: Yes" }
+          }
+        ]
       }
     ]
   }
