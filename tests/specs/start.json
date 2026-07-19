@@ -1,16 +1,69 @@
 [
   {
-    "name": "/start replies with the welcome + main menu",
+    "name": "/start initiates onboarding for new users",
     "steps": [
       {
         "send": { "text": "/start" },
         "expect": [
           {
             "method": "sendMessage",
-            "payload": { "text": "👋 Welcome! Tap a button below to get started." }
+            "payload": {
+              "text": "First, what's your timezone?\nThis helps me send signals at the right time for you."
+            }
           }
         ]
       }
+    ]
+  },
+  {
+    "name": "onboarding flow: select timezone, pairs, notification, complete",
+    "steps": [
+      {
+        "send": { "text": "/start" },
+        "expect": [
+          {
+            "method": "sendMessage",
+            "payload": { "text": "First, what's your timezone?\nThis helps me send signals at the right time for you." }
+          }
+        ]
+      },
+      {
+        "send": { "callback": "onb:tz:UTC" },
+        "expect": [
+          {
+            "method": "editMessageText",
+            "payload": { "text": "Timezone set to UTC.\n\nNow select the pairs you want signals for:" }
+          }
+        ]
+      },
+      {
+        "send": { "callback": "onb:pairs:ok" },
+        "expect": [
+          {
+            "method": "editMessageText",
+            "payload": { "text": "Great choices!\n\nWhen should I send you signals?" }
+          }
+        ]
+      },
+      {
+        "send": { "callback": "onb:notify:24x5" },
+        "expect": [
+          {
+            "method": "editMessageText",
+            "payload": { "text": "You're all set!\n\nI'll send you signals for EUR/USD, GBP/USD, USD/JPY, AUD/USD, USD/CHF, USD/CAD, NZD/USD during all trading hours.\n\nTap a button below to explore." }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "/start shows main menu for returning subscribed users",
+    "steps": [
+      { "send": { "text": "/start" }, "expect": [{ "method": "sendMessage" }] },
+      { "send": { "callback": "onb:tz:UTC" }, "expect": [{ "method": "editMessageText" }] },
+      { "send": { "callback": "onb:pairs:ok" }, "expect": [{ "method": "editMessageText" }] },
+      { "send": { "callback": "onb:notify:24x5" }, "expect": [{ "method": "editMessageText" }] },
+      { "send": { "text": "/start" }, "expect": [{ "method": "sendMessage", "payload": { "text": "👋 Welcome to Forex Signals!\n\nI deliver algorithmic trading signals straight to your chat. Tap a button to get started." } }] }
     ]
   }
 ]

@@ -1,0 +1,78 @@
+[
+  {
+    "name": "Signals button shows empty state for new user",
+    "steps": [
+      {
+        "send": { "callback": "signals:show" },
+        "expect": [
+          {
+            "method": "editMessageText",
+            "payload": { "text": "No active signals right now. Check back soon." }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Test signal creation shows signal with action buttons",
+    "steps": [
+      {
+        "send": { "callback": "signal:create-test" },
+        "expect": [
+          { "method": "editMessageText" }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Accept signal updates status",
+    "steps": [
+      {
+        "send": { "callback": "signal:create-test" },
+        "expect": [{ "method": "editMessageText" }]
+      },
+      {
+        "send": { "callback": "signal:accept:sig_0_1" },
+        "expect": [
+          { "method": "editMessageText" }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Dismiss signal updates status",
+    "steps": [
+      {
+        "send": { "callback": "signal:create-test" },
+        "expect": [{ "method": "editMessageText" }]
+      },
+      {
+        "send": { "callback": "signal:dismiss:sig_0_1" },
+        "expect": [
+          {
+            "method": "editMessageText",
+            "payload": { "text": "Signal dismissed." }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Snooze signal updates status",
+    "steps": [
+      {
+        "send": { "callback": "signal:create-test" },
+        "expect": [{ "method": "editMessageText" }]
+      },
+      {
+        "send": { "callback": "signal:snooze:sig_0_1" },
+        "expect": [
+          {
+            "method": "editMessageText",
+            "payload": { "text": "⏰ Snoozed for 1 hour. I'll remind you later." }
+          }
+        ]
+      }
+    ]
+  }
+]
